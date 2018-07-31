@@ -1,4 +1,5 @@
 <?php
+
 namespace frontend\controllers;
 
 use common\models\Post;
@@ -92,6 +93,22 @@ class SiteController extends Controller
      */
     public function actionIndex($id = null, $title = null)
     {
+        if (empty($id) && empty($title)) {
+            $dataProvider = new ActiveDataProvider([
+                'query' => Post::find()->notArchive(),
+                'sort' => [
+                    'defaultOrder' => [
+                        'updated_at' => SORT_DESC,
+                    ]
+                ],
+                'pagination' => [
+                    'pageSize' => 20,
+                ],
+            ]);
+            return $this->render('list', [
+                'dataProvider' => $dataProvider,
+            ]);
+        }
         $post = Post::findPostByIdOrTitle($id, $title);
 
         return $this->render('index', [
