@@ -112,7 +112,7 @@ class SiteController extends Controller
         $post = Post::findPostByIdOrTitle($id, $title);
 
         return $this->render('index', [
-            'id' => $id,
+            'id' => $post->id,
             'post' => $post,
         ]);
     }
